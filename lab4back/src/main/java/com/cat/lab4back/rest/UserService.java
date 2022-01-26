@@ -25,7 +25,7 @@ public class UserService {
 
     @POST
     @Path("/send")
-    @Produces("text/plain")
+    @Produces("application/json")
     public String sendPoint(
             @QueryParam("x") @DefaultValue("0") String x,
             @QueryParam("y") @DefaultValue("0") String y,
@@ -57,7 +57,7 @@ public class UserService {
 
     @GET
     @Path("/fetch")
-    @Produces("text/plain")
+    @Produces("application/json")
     public String fetchAll() {
         ArrayList<Point> list = dbCommunicator.getAll();
         return new Gson().toJson(list);
