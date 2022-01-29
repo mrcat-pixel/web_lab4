@@ -4,8 +4,23 @@
     <tr>
       <td class="control-panel">
         <button type="button" class="btn reset-colors material-icons" v-on:click="logout">logout</button>
-        <div id="click_catcher">
-          <img id="graph" src="/img/graph.svg">
+        <div @mousemove="graphMouseMove" @mousedown="send">
+          <svg height="300" width="300" xmlns="http://www.w3.org/2000/svg" id="graph" class="shadow-graph" style="pointer-events: none">
+            <polygon fill="palevioletred" fill-opacity="0.3" points="230,150 150,150 150,110" id="figure1"/>
+
+            <polygon fill="mediumspringgreen" fill-opacity="0.3" points="70,150 70,190 150,190 150,150" id="figure2"/>
+
+            <path d="M 70 150 L 150 150 L 150 70 C 110 70 70 110 70 150 Z" fill="rgb(174, 193, 187)" fill-opacity="0.3" id="figure3"/>
+
+            <line stroke="rgb(174, 193, 187)" x1="10" x2="290" y1="150" y2="150" stroke-width="5" stroke-linecap="round"/>
+            <line stroke="rgb(174, 193, 187)" x1="150" x2="150" y1="10" y2="290" stroke-width="5" stroke-linecap="round"/>
+            <polygon fill="rgb(174, 193, 187)" points="150,0 140,15 160,15"/>
+            <polygon fill="rgb(174, 193, 187)" points="300,150 285,160 285,140"/>
+            <g v-for="point in points" :key="point.id">
+              <circle v-bind:cx="point.x * 20 + 150" v-bind:cy="(-point.y) * 20 + 150" r="4" class="littleDot"
+                      v-bind:fill="point.insideArea ? 'mediumspringgreen' : 'palevioletred'"></circle>
+            </g>
+          </svg>
         </div>
         <div class="X_select">
           <p class="prompt-text">Введите X (-4 ... 4):</p>
@@ -20,11 +35,12 @@
           <p class="prompt-text">Введите Y (-5 ... 3):</p>
           <input type="text" class="text-input" placeholder="Введите значение..." v-model="yValue" >
         </div>
-        <div class="R_select" id="click_catcher2">
-          <p class="prompt-text">Введите R (-4 ... 4):</p>
+        <div class="R_select">
+          <p class="prompt-text">Введите R (0 ... 4):</p>
           <div class="box-visual invert-colors">
             <div v-for="i in 9" :key="i">
-              <input type="radio" name="r" :id="'r_' + (i - 5).toString().replace('-', '_')" :value="i - 5" v-model="rValue">
+              <input type="radio" name="r" :id="'r_' + (i - 5).toString().replace('-', '_')" :value="i - 5"
+                     v-model="rValue" v-on:input="redrawFigure">
               <label :for="'r_' + (i - 5).toString().replace('-', '_')">{{ i - 5 }}</label>
             </div>
           </div>
@@ -68,9 +84,9 @@ export default {
   name: "MainPage",
   data() {
     return {
-      xValue: '',
-      yValue: '',
-      rValue: '',
+      xValue: 0,
+      yValue: 0,
+      rValue: 4,
       points: undefined
     }
   },
@@ -130,13 +146,11 @@ export default {
         const json = await res.json();
         this.points.push(json);
       }
-
-      this.reset()
     },
     reset: function() {
-      this.xValue = "";
-      this.yValue = "";
-      this.rValue = "";
+      this.xValue = 0;
+      this.yValue = 0;
+      this.rValue = 4;
     },
     resetWithClear: async function() {
       this.reset()
@@ -188,29 +202,49 @@ export default {
       if (circle !== null) circle.parentElement.removeChild(circle);
     },
 
-    graphMouseMove(evt) {
+    graphMouseMove: function (evt) {
       let offset = this.getCoords(evt.target);
       const width = offset.right - offset.left;
       const height = offset.bottom - offset.top;
 
-      let x = (evt.pageX - offset.left - width / 2) / (width / 2) * (5 / 2 * 3);
-      let y = -Math.round((evt.pageY - offset.top - height / 2) / (height / 2) * (5 / 2 * 3));
+      let x = Math.round((evt.pageX - offset.left - width / 2) / (width / 2) * (5 / 2 * 3));
+      let y = -Number(((evt.pageY - offset.top - height / 2) / (height / 2) * (5 / 2 * 3)).toFixed(3));
 
-      if (x < -3) { x = -3; }
-      else if (x > 5) { x = 5; }
+      if (x < -4) { x = -4; }
+      else if (x > 4) { x = 4; }
 
       if (y < -5 ) { y = -5; }
-      else if ( y > 5) { y = 5; }
+      else if ( y > 3) { y = 3; }
 
       this.drawOMarker(x, y);
 
-      // this.xValue = x;
-      // this.yValue = y;
+      this.xValue = x;
+      this.yValue = y;
+    },
+
+    redrawFigure: function() {
+      setTimeout(() => this.executeRedraw(this.rValue), 100);
+    },
+
+    executeRedraw(scale){
+      let figure1 = document.getElementById("figure1");
+      if (scale < 0) scale = 0;
+
+      figure1.setAttributeNS(null, 'points',
+          (150 + 20*scale) + ",150 150,150 150," + (150 - 10*scale)
+      );
+
+      let figure2 = document.getElementById("figure2");
+      figure2.setAttributeNS(null, 'points',
+          (150 - 20*scale) + ",150 " + (150 - 20*scale) + "," + (150 + 10*scale) + " 150," + (150 + 10*scale) + " 150,150"
+      );
+
+      let figure3 = document.getElementById("figure3");
+      figure3.setAttributeNS(null, 'd',
+          "M " + (150 - 20*scale) + " 150 L 150 150 L 150 " + (150 - 20*scale) + " C " + (150 - 10*scale) + " " +
+          (150 - 20*scale) + " " + (150 - 20*scale) + " " + (150 - 10*scale) + " " + (150 - 20*scale) + " 150 Z"
+      );
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -74,7 +74,7 @@ select {
 }
 .logo {
     border-radius: 50rem;
-    margin: 25px;
+    margin: auto;
 }
 .confirm-colors {
     color: #3A213F;
@@ -148,4 +148,8 @@ body .ui-radiobutton .ui-radiobutton-box.ui-state-active .ui-icon-bullet {
 
 body .ui-radiobutton .ui-radiobutton-box.ui-state-active.ui-state-hover {
     background: #3a213f;
+}
+
+.name-plate {
+    text-align: center;
 }
