@@ -1,13 +1,12 @@
 <template>
 
-  <!-- TODO: do proper design for this shit -->
-
-  <div class="page-size-container d-flex align-items-center justify-content-center flex-column">
+  <div class="d-flex align-items-center justify-content-center flex-column">
     <div class="d-flex flex-column align-items-center gap-2">
+      <br>
       <img src="img/av3.jpg" width="300" class="logo shadow" alt="logo"/>
 
       <h1 class="main-title">Лаба 4</h1>
-      <h3 class="box-visual invert-colors name-plate">Глушков Даниил <br> P3233 <br> Вариант 33555</h3>
+      <h3 class="box-visual invert-colors center-text">Глушков Даниил <br> P3233 <br> Вариант 33555</h3>
       <br>
       <input type="text" placeholder="Логин" class="text-input" v-model="login">
       <input type="password" placeholder="Пароль" class="text-input" v-model="password">

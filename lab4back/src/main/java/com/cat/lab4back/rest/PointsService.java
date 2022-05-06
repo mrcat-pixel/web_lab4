@@ -2,7 +2,9 @@ package com.cat.lab4back.rest;
 
 import com.cat.lab4back.models.Point;
 import com.cat.lab4back.tools.DBCommunicatorPoints;
+import com.cat.lab4back.tools.GsonDateAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -16,6 +18,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.cat.lab4back.rest.UserService.COOKIE_NAME;
 
@@ -84,7 +87,9 @@ public class PointsService {
         point.calc();
         dbCommunicator.sendOne(point);
 
-        return new Gson().toJson(point);
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new GsonDateAdapter()).create();
+        return gson.toJson(point);
     }
 
     @DELETE
@@ -113,6 +118,9 @@ public class PointsService {
             return new Gson().toJson(null);
         }
         ArrayList<Point> list = dbCommunicator.getAll();
-        return new Gson().toJson(list);
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new GsonDateAdapter()).create();
+        return gson.toJson(list);
     }
 }

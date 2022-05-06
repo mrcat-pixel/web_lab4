@@ -1,85 +1,85 @@
 <template>
-  <table class="main-structure-table">
-    <tbody>
-    <tr>
-      <td class="control-panel">
-        <button type="button" class="btn reset-colors material-icons" v-on:click="logout">logout</button>
-        <div @mousemove="graphMouseMove" @mousedown="send">
-          <svg height="300" width="300" xmlns="http://www.w3.org/2000/svg" id="graph" class="shadow-graph" style="pointer-events: none">
-            <polygon fill="palevioletred" fill-opacity="0.3" points="230,150 150,150 150,110" id="figure1"/>
+  <div class="container">
+    <div class="control-panel">
+      <button type="button" class="btn reset-colors material-icons" v-on:click="logout">logout</button>
+      <div @mousemove="graphMouseMove" @mousedown="send" class="center-text">
+        <svg height="300" width="300" xmlns="http://www.w3.org/2000/svg" id="graph" class="shadow-graph" style="pointer-events: none">
+          <polygon fill="palevioletred" fill-opacity="0.3" points="230,150 150,150 150,110" id="figure1"/>
 
-            <polygon fill="mediumspringgreen" fill-opacity="0.3" points="70,150 70,190 150,190 150,150" id="figure2"/>
+          <polygon fill="mediumspringgreen" fill-opacity="0.3" points="70,150 70,190 150,190 150,150" id="figure2"/>
 
-            <path d="M 70 150 L 150 150 L 150 70 C 110 70 70 110 70 150 Z" fill="rgb(174, 193, 187)" fill-opacity="0.3" id="figure3"/>
+          <path d="M 70 150 L 150 150 L 150 70 C 110 70 70 110 70 150 Z" fill="rgb(174, 193, 187)" fill-opacity="0.3" id="figure3"/>
 
-            <line stroke="rgb(174, 193, 187)" x1="10" x2="290" y1="150" y2="150" stroke-width="5" stroke-linecap="round"/>
-            <line stroke="rgb(174, 193, 187)" x1="150" x2="150" y1="10" y2="290" stroke-width="5" stroke-linecap="round"/>
-            <polygon fill="rgb(174, 193, 187)" points="150,0 140,15 160,15"/>
-            <polygon fill="rgb(174, 193, 187)" points="300,150 285,160 285,140"/>
-            <g v-for="point in points" :key="point.id">
-              <circle v-bind:cx="point.x * 20 + 150" v-bind:cy="(-point.y) * 20 + 150" r="4" class="littleDot"
-                      v-bind:fill="point.insideArea ? 'mediumspringgreen' : 'palevioletred'"></circle>
-            </g>
-          </svg>
-        </div>
-        <div class="X_select">
-          <p class="prompt-text">Введите X (-4 ... 4):</p>
-          <div class="box-visual invert-colors">
-            <div v-for="i in 9" :key="i">
-              <input type="radio" name="x" :id="'x_' + (i - 5).toString().replace('-', '_')" :value="i - 5" v-model="xValue">
-              <label :for="'x_' + (i - 5).toString().replace('-', '_')">{{ i - 5 }}</label>
-            </div>
+          <line stroke="rgb(174, 193, 187)" x1="10" x2="290" y1="150" y2="150" stroke-width="5" stroke-linecap="round"/>
+          <line stroke="rgb(174, 193, 187)" x1="150" x2="150" y1="10" y2="290" stroke-width="5" stroke-linecap="round"/>
+          <polygon fill="rgb(174, 193, 187)" points="150,0 140,15 160,15"/>
+          <polygon fill="rgb(174, 193, 187)" points="300,150 285,160 285,140"/>
+          <g v-for="point in points" :key="point.id">
+            <circle v-bind:cx="point.x * 20 + 150" v-bind:cy="(-point.y) * 20 + 150" r="4" class="littleDot"
+                    v-bind:fill="point.insideArea ? 'mediumspringgreen' : 'palevioletred'"></circle>
+          </g>
+        </svg>
+      </div>
+      <div class="X_select">
+        <p class="prompt-text">Введите X (-4 ... 4):</p>
+        <div class="box-visual invert-colors">
+          <div v-for="i in 9" :key="i">
+            <input type="radio" name="x" :id="'x_' + (i - 5).toString().replace('-', '_')" :value="i - 5" v-model="xValue">
+            <label :for="'x_' + (i - 5).toString().replace('-', '_')">{{ i - 5 }}</label>
           </div>
         </div>
-        <div class="Y_select">
-          <p class="prompt-text">Введите Y (-5 ... 3):</p>
-          <input type="text" class="text-input" placeholder="Введите значение..." v-model="yValue" >
+      </div>
+      <div class="Y_select">
+        <p class="prompt-text">Введите Y (-5 ... 3):</p>
+        <div class="center-text">
+        <input type="text" class="text-input" placeholder="Введите значение..." v-model="yValue" >
         </div>
-        <div class="R_select">
-          <p class="prompt-text">Введите R (0 ... 4):</p>
-          <div class="box-visual invert-colors">
-            <div v-for="i in 9" :key="i">
-              <input type="radio" name="r" :id="'r_' + (i - 5).toString().replace('-', '_')" :value="i - 5"
-                     v-model="rValue" v-on:input="redrawFigure">
-              <label :for="'r_' + (i - 5).toString().replace('-', '_')">{{ i - 5 }}</label>
-            </div>
+      </div>
+      <div class="R_select">
+        <p class="prompt-text">Введите R (0 ... 4):</p>
+        <div class="box-visual invert-colors">
+          <div v-for="i in 9" :key="i">
+            <input type="radio" name="r" :id="'r_' + (i - 5).toString().replace('-', '_')" :value="i - 5"
+                   v-model="rValue" v-on:input="redrawFigure">
+            <label :for="'r_' + (i - 5).toString().replace('-', '_')">{{ i - 5 }}</label>
           </div>
         </div>
-        <br/>
-        <button class="btn confirm-colors material-icons" v-on:click="send">send</button>
-        <button class="btn reset-colors material-icons" v-on:click="resetWithClear">backspace</button>
-      </td>
-      <td class="indent-box">
-        <table class="result-table" id="result">
-          <thead>
-          <tr>
-            <td>X</td>
-            <td>Y</td>
-            <td>R</td>
-            <td>Входит?</td>
-            <td>Время</td>
-            <td>Выполнение</td>
-          </tr>
-          </thead>
+      </div>
+      <br/>
+      <button class="btn confirm-colors material-icons" v-on:click="send">send</button>
+      <button class="btn reset-colors material-icons" v-on:click="resetWithClear">backspace</button>
+    </div>
+    <div class="indent-box">
+      <table class="result-table" id="result">
+        <thead>
+        <tr>
+          <td>X</td>
+          <td>Y</td>
+          <td>R</td>
+          <td>?</td>
+          <td>Время</td>
+          <td>Вып-е</td>
+        </tr>
+        </thead>
 
-          <tbody v-if="points">
-          <tr v-for="point in points" :key="point.id">
-            <td>{{point.x}}</td>
-            <td>{{point.y}}</td>
-            <td>{{point.r}}</td>
-            <td>{{point.insideArea ? 'да' : 'нет'}}</td>
-            <td>{{point.timestamp}}</td>
-            <td>{{point.executionTime}}</td>
-          </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+        <tbody v-if="points">
+        <tr v-for="point in points" :key="point.id">
+          <td>{{point.x}}</td>
+          <td>{{point.y.toFixed(2)}}</td>
+          <td>{{point.r}}</td>
+          <td>{{point.insideArea ? 'да' : 'нет'}}</td>
+          <td>{{point.timestamp}}</td>
+          <td>{{point.executionTime + 'мс'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
+
+
 export default {
   name: "MainPage",
   data() {
@@ -92,7 +92,6 @@ export default {
   },
 
   created: async function() {
-    console.log('let me grab your ass and check your permissions for this page!!')
 
     let res = await fetch('https://wf.savok.pw/lab4back-1_0-SNAPSHOT/api/user', {
       credentials: 'include'

@@ -1,7 +1,5 @@
 package com.cat.lab4back.models;
 
-import com.google.gson.Gson;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

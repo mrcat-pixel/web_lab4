@@ -4,11 +4,9 @@ html {
     background: #3A213F;
     font-family: 'Jost', sans-serif;
     font-weight: normal;
-    font-size: 20px;
+    font-size: 18px;
 }
-.footer {
-    text-align: center;
-}
+
 .invert-colors {
     background: #AEC1BB;
     color: #3A213F;
@@ -18,22 +16,15 @@ html {
     border-radius: 20px;
 }
 .indent-box {
-    margin: 43px;
+    box-shadow: inset 5px 5px 5px 5px rgba(0, 0, 0, 0.25);
     background-color: #241228;
+    flex-grow: 5;
 }
-.box-visual, .main-structure-table, .text-input {
-    width: 80%;
-    margin: auto;
-}
-.main-structure-table {
-    display: block;
-}
+
 td {
     vertical-align: top;
 }
-.mew {
-    font-style: italic;
-}
+
 .main-title {
     font-size: 3rem;
     font-family: 'Jost', sans-serif;
@@ -84,17 +75,11 @@ select {
     color: #3A213F;
     background-color: palevioletred;
 }
-.content {
-    max-width: 1200px;
-    margin: 80px auto;
-}
+
 button, .btn {
     margin: 5px;
 }
-.indent-box {
-    box-shadow: inset 5px 5px 5px 5px rgba(0, 0, 0, 0.25);
-    width:100%;
-}
+
 .result-table {
     width: 100%;
     text-align: center;
@@ -102,54 +87,19 @@ button, .btn {
     background-color: #3A213F;
     padding: 10px;
 }
-.incorrect-input-notif {
-    color: palevioletred;
-}
-
-.clock, .clock-date {
-    font-family: 'Jost', sans-serif;
-    text-align: center;
-}
-.clock {
-    font-size: 6rem;
-    margin: 10px;
-}
-
-.clock-date {
-    font-size: 2rem;
-}
 
 .grid-radio td {
     padding: .5rem;
 }
 
-body .ui-radiobutton .ui-radiobutton-box.ui-state-active {
-    border-color: mediumspringgreen;
-    background: mediumspringgreen;
-}
-
-body .ui-radiobutton .ui-radiobutton-box.ui-state-focus {
-    box-shadow: 0 0 0 0.2em mediumspringgreen;
-}
-
-body .ui-radiobutton .ui-radiobutton-box.ui-state-hover {
-    border-color: mediumspringgreen;
-    background: mediumspringgreen;
-}
-
-body .ui-radiobutton .ui-radiobutton-box {
-    border: 3px solid #3a213f;
-    background: #aec1bb;
-}
-
-body .ui-radiobutton .ui-radiobutton-box.ui-state-active .ui-icon-bullet {
-    background: #3a213f;
-}
-
-body .ui-radiobutton .ui-radiobutton-box.ui-state-active.ui-state-hover {
-    background: #3a213f;
-}
-
-.name-plate {
+.center-text {
     text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin: 5px;
+    flex-wrap: wrap;
 }
